@@ -1,13 +1,15 @@
 import {test,expect} from '@playwright/test'; 
 
 test.describe('Registration', {tag: '@auth'} , () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/articles/register');
+    });
 
     test('REG1: New User Registered Success Test' , async ({ page }) => {
         const username = `aqa_${Date.now()}`;
         const email = `aqa_${Date.now()}@mail.com`;
         const password = `qwerty123`;
 
-        await page.goto('/articles/register');
         await page.getByTestId('auth-username').fill(username);
         await page.getByTestId('auth-email').fill(email);
         await page.getByTestId('auth-password').fill(password);
@@ -24,7 +26,6 @@ test.describe('Registration', {tag: '@auth'} , () => {
         const email = `olena@example.com`;
         const password = `qwerty123`;
 
-        await page.goto('/articles/register');
         await page.getByTestId('auth-username').fill(username);
         await page.getByTestId('auth-email').fill(email);
         await page.getByTestId('auth-password').fill(password);
@@ -40,7 +41,6 @@ test.describe('Registration', {tag: '@auth'} , () => {
         const email = `olena@example.com`;
         const password = `qwerty123`;
 
-        await page.goto('/articles/register');
         await page.getByTestId('auth-username').fill(username);
         await page.getByTestId('auth-email').fill(email);
         await page.getByTestId('auth-password').fill(password);
@@ -55,12 +55,14 @@ test.describe('Registration', {tag: '@auth'} , () => {
 });
 
 test.describe('Login', {tag: '@auth'} , () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/articles/login');
+    });
 
     test('LOG1: User Logged in Success Test' , async ({ page }) => {
         const email = `olena@example.com`;
         const password = `password`;
 
-        await page.goto('/articles/login');
         await page.getByTestId('auth-email').fill(email);
         await page.getByTestId('auth-password').fill(password);
         await page.getByTestId('auth-submit').click();
@@ -73,7 +75,6 @@ test.describe('Login', {tag: '@auth'} , () => {
         const email = `olena@example.com`;
         const password = `password_invalid`;
 
-        await page.goto('/articles/login');
         await page.getByTestId('auth-email').fill(email);
         await page.getByTestId('auth-password').fill(password);
         await page.getByTestId('auth-submit').click();
@@ -85,7 +86,6 @@ test.describe('Login', {tag: '@auth'} , () => {
         const email = `olena2@example.com`;
         const password = `password`;
 
-        await page.goto('/articles/login');
         await page.getByTestId('auth-email').fill(email);
         await page.getByTestId('auth-password').fill(password);
         await page.getByTestId('auth-submit').click();
