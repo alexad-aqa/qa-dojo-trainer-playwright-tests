@@ -1,6 +1,6 @@
 import {test,expect} from '@playwright/test'; 
 
-test.describe('Registration', {tag: '@auth'} , () => {
+test.describe('Registration', {tag: '@hw5:auth'} , () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/articles/register');
     });
@@ -34,7 +34,7 @@ test.describe('Registration', {tag: '@auth'} , () => {
         await page.getByTestId('auth-submit').click();
         await expect(page.getByText('body email або username')).toBeVisible();
         await expect(page.getByTestId('error-messages').getByRole('paragraph')).toContainText('body email або username вже зайняті');
-    });
+    })
 
     test('REG3: Username less than 3 chars Validation Test' , async ({ page }) => {
         const username = `Ol`;
@@ -54,7 +54,7 @@ test.describe('Registration', {tag: '@auth'} , () => {
 
 });
 
-test.describe('Login', {tag: '@auth'} , () => {
+test.describe('Login', {tag: '@hw5:auth'} , () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/articles/login');
     });
