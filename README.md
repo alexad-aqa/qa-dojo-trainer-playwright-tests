@@ -1,4 +1,4 @@
-# QA Dojo Articles Playwright Tests
+# QA Dojo Trainer Playwright Tests
 
 ## Install
 
