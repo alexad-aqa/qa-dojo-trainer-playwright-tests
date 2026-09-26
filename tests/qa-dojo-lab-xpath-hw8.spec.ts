@@ -38,13 +38,13 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
 
     test('Test Col Sorted A-Z by default', async({page}) => {   
         const testColItemsAscDefault = await testColItems.allTextContents();
-        const sortedTestColItemsAsc = [...testColItemsAscDefault].sort((a,b) => a.localeCompare(b));
+        const sortedTestColItemsAsc = testColItemsAscDefault.sort((a,b) => a.localeCompare(b));
             await expect(testColItemsAscDefault).toEqual(sortedTestColItemsAsc);  
     });
 
     test('Test Col sorted Z-A', async({page})=> {
         const testColItemsAscDefault = await testColItems.allTextContents();
-        const sortedTestColItemsDesc = [...testColItemsAscDefault].sort((a,b) => b.localeCompare(a));
+        const sortedTestColItemsDesc = testColItemsAscDefault.sort((a,b) => b.localeCompare(a));
             await testColSortIcon.click();
         const sortedTestColItemsDescUI = await testColItems.allTextContents();
             await expect(sortedTestColItemsDescUI).toEqual(sortedTestColItemsDesc);
@@ -52,7 +52,7 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
 
     test('Status Col sorted A-Z', async({page}) => {
         const statusColItemsInitial = await statusColItems.allTextContents();
-        const sortedStatusColItemsAsc = [...statusColItemsInitial].sort((a,b) => a.localeCompare(b));
+        const sortedStatusColItemsAsc = statusColItemsInitial.sort((a,b) => a.localeCompare(b));
             await statusColSortIcon.click();
         const sortedStatusColItemsAscUI = await statusColItems.allTextContents();
             await expect(sortedStatusColItemsAscUI).toEqual(sortedStatusColItemsAsc);
@@ -60,7 +60,7 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
 
     test('Status Col sorted Z-A', async ({page}) => {
         const statusColItemsInitial = await statusColItems.allTextContents();
-        const sortedStatusColItemDesc = [...statusColItemsInitial].sort((a,b) => b.localeCompare(a));
+        const sortedStatusColItemDesc = statusColItemsInitial.sort((a,b) => b.localeCompare(a));
             await statusColSortIcon.dblclick();
         const sortedStatusColItemsDescUI = await statusColItems.allTextContents();
             await expect(sortedStatusColItemsDescUI).toEqual(sortedStatusColItemDesc);
@@ -68,7 +68,7 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
 
     test('Duration Col sorted 0-9', async ({page}) => {
         const durationColItemsInitial = await (await durationColItems.allTextContents()).map(item => parseFloat(item));
-        const sortedDurationColItemsAsc = [...durationColItemsInitial].sort((a,b) => a - b);
+        const sortedDurationColItemsAsc = durationColItemsInitial.sort((a,b) => a - b);
             await durationColSortIcon.click();
         const sortedDurationColItemsAscUI = await (await durationColItems.allTextContents()).map(item => parseFloat(item));
             await expect(sortedDurationColItemsAscUI).toEqual(sortedDurationColItemsAsc);
@@ -76,7 +76,7 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
 
     test('Duration Col sorted 9-0', async({page}) => {
         const durationColItemsInitial = await (await durationColItems.allTextContents()).map(item => parseFloat(item));
-        const sortedDurationColItemsDesc = [...durationColItemsInitial].sort((a,b) => b - a);
+        const sortedDurationColItemsDesc = durationColItemsInitial.sort((a,b) => b - a);
             await durationColSortIcon.dblclick();
         const sortedDurationColItemsDescUI = await (await durationColItems.allTextContents()).map(item => parseFloat(item));
             await expect(sortedDurationColItemsDescUI).toEqual(sortedDurationColItemsDesc);
