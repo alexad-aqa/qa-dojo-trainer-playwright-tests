@@ -22,16 +22,16 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
         table = page.locator('//*[@data-testid="interactions-table"]');
             await table.waitFor({ state: 'visible' });
 
-        testColItems = page.locator('.px-5.py-3.font-semibold');
+        testColItems = page.locator('//*[@class = "px-5 py-3 font-semibold"]');
         testColSortIcon = page.locator('//*[@data-testid="interactions-sort-name"]');
 
         statusColItems = page.locator("//td[.//span[contains(@class, 'rounded-full')]]");
         statusColSortIcon = page.locator('//*[@data-testid="interactions-sort-status"]'); 
 
-        durationColItems = page.locator('.px-5.py-3.tabular-nums');
+        durationColItems = page.locator('//*[@class = "px-5 py-3 tabular-nums"]');
         durationColSortIcon = page.locator('//*[@data-testid="interactions-sort-duration"]');
 
-        tableCheckbox = page.locator('//input[contains(@data-testid, "interactions-row-select-1")]');
+        tableCheckbox = page.locator('//input[contains(@data-testid, "interactions-row-select")]');
         selectedCount = page.locator('//*[@data-testid="interactions-selected-count"]');
 
     });
@@ -84,7 +84,7 @@ test.describe('Sorting+ChBox+Xpath', {tag: '@hw8:xpath'}, () => {
     });
 
     test(' 1st Checkbox Selected & Counter Increased +1', async({page}) => {
-        await tableCheckbox.check();
+        await tableCheckbox.nth(0).check();
         await expect(await selectedCount).toContainText('1');
     });
 
