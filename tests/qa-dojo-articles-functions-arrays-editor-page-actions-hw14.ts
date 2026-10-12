@@ -44,14 +44,14 @@ async function getArticlePageLocators(page: Page) {
     }
 };
 
-export async function goToGlobalFeed(påage: Page) {
+export async function goToGlobalFeed(page: Page) {
     const articlesPage = await getArticlePageLocators(page);
     await articlesPage.globalFeedTab.click();
 }
 
 export async function readFirstArticle(page: Page) {
     const articlesPage = await getArticlePageLocators(page);
-    await articlesPage.previewArticleTitle.filter().click();
+    await articlesPage.previewArticleTitle.first().click();
 }
 
 async function typeSearchKeyword(page: Page, keyword) {
