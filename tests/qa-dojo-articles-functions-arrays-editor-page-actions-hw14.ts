@@ -149,5 +149,7 @@ export async function createMultipleArticles(page: Page) {
         titles.push(title);
         //await waitForEditBtnVisible(page);
     }
+    return titles;
 }
+
 

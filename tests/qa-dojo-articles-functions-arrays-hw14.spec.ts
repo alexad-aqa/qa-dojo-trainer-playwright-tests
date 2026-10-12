@@ -1,43 +1,16 @@
 import { test, expect } from '@playwright/test'
-import { submitRegistrationForm } from './qa-dojo-articles-functions-page-actions-hw12'
-import { goToEditorPage, createArticle, goToArticlesHomePage, goToGlobalFeed, searchArticleByName, followUser, readFirstArticle } from './qa-dojo-articles-functions-arrays-editor-page-actions-hw14'
+import { submitRegistrationForm, registerNewUser } from './qa-dojo-articles-functions-page-actions-hw12'
+import { goToEditorPage, createArticle, goToArticlesHomePage, goToGlobalFeed, searchArticleByName, followUser, readFirstArticle, createMultipleArticles } from './qa-dojo-articles-functions-arrays-editor-page-actions-hw14'
 
 
 test.describe('Articles Create', { tag: '@hw14:functions/arrays' }, () => {
-    let username: string;
-    let email: string;
-    let password: string;
-
 
     test('10 Articles Created and visible on Global/Feed Lists', async ({ page }) => {
 
-        const userProfile_Header = page.getByTestId('nav-profile');
-
-        username = `aqa1_${Date.now()}`;
-        email = `aqa1_${Date.now()}@mail.com`;
-        password = `qwerty123`;
-
-        await page.goto('/articles/register');
-        await submitRegistrationForm(page, username, email, password);
-        await expect(userProfile_Header).toContainText(username);
-
-        const titles = [];
-        const randomNumber = Math.floor(Math.random() * 1000000);
-
-        for (let i = 1; i <= 10; i++) {
-            const title = `aqa1_${randomNumber}-${i}`;
-            const description = `aqa1-${i}`;
-            const body = `aqa1-${i}`;
-            const tag = ['automation, functions, arrays'].toString()
-
-            await goToEditorPage(page);
-            await createArticle(page, title, description, body, tag);
-            titles.push(title);
-        }
-
+        await registerNewUser(page, 'aqa1');
+        const titles = await createMultipleArticles(page);
         await goToArticlesHomePage(page);
         await goToGlobalFeed(page);
-
 
         const previewArticleTitle = page.getByTestId(/preview-title/);
         await previewArticleTitle.first().waitFor({ state: 'visible', timeout: 5000 });
@@ -77,13 +50,7 @@ test.describe('Articles Create', { tag: '@hw14:functions/arrays' }, () => {
             expect(foundTitles).toContain(t);
         }
 
-        username = `aqa2_${Date.now()}`;
-        email = `aqa2_${Date.now()}@mail.com`;
-        password = `qwerty123`;
-
-        await page.goto('/articles/register');
-        await submitRegistrationForm(page, username, email, password);
-
+        await registerNewUser(page, 'aqa2');
         await goToGlobalFeed(page);
         await searchArticleByName(page, titles[0]);
         await readFirstArticle(page);
@@ -97,5 +64,4 @@ test.describe('Articles Create', { tag: '@hw14:functions/arrays' }, () => {
             console.log(`Articles found on Your Feed Page: ${t}`)
         }
     });
-
 });
