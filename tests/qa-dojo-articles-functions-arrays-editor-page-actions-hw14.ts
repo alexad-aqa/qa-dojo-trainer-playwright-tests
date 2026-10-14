@@ -168,14 +168,13 @@ export async function findArticlesAcrossGlobalPages(page: Page, myTitles) {
     const articlesPage = await getArticlePageLocators(page);
 
     const foundTitles = [];
-    //const pagination = await articlesPage.paginationTxtLinks;
     const paginationCount = await articlesPage.paginationTxtLinks.count();
 
     for (let i = 0; i < paginationCount; i++) {
 
         const currentPage = articlesPage.paginationTxtLinks.nth(i);
         
-        const pageNumber = await articlesPage.paginationTxtLinks.nth(i).textContent();
+        const pageNumber = await currentPage.textContent();
         console.log(`Go to Global page #: ${pageNumber}`);
 
         await currentPage.click();
