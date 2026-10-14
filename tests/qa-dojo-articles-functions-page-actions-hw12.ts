@@ -59,7 +59,7 @@ export async function submitRegistrationForm(page: Page, username, email, passwo
     await regPageLocators.createAccountBtn_Reg.click();
 };
 
-export async function registerNewUser(page: Page, prefix) {
+export async function registerUser(page: Page, prefix) {
     const username = `${prefix}_${Date.now()}`;
     const email = `${prefix}_${Date.now()}@mail.com`;
     const password = `qwerty123`;

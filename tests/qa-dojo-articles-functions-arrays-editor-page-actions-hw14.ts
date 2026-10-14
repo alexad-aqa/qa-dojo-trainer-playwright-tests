@@ -24,56 +24,6 @@ export async function goToEditorPage(page: Page) {
     await headerLocators.newArticleTxtLink_Header.click()
 }
 
-// *** Articles Home Page Locators & Actions *** 
-
-async function getArticlePageLocators(page: Page) {
-    const globalFeedTab = page.getByTestId('feed-tab-global');
-    const previewArticleTitle = page.getByTestId(/preview-title/);
-    const searchInput = page.getByTestId('home-search-input');
-    const followBtn = page.getByTestId('article-follow-button');
-    const applySearchBtn = page.getByTestId('home-filter-apply');
-    const paginationTxtLinks = page.getByTestId(/pagination-page/);
-
-    return {
-        globalFeedTab,
-        previewArticleTitle,
-        searchInput,
-        followBtn,
-        applySearchBtn,
-        paginationTxtLinks
-    }
-};
-
-export async function goToGlobalFeed(page: Page) {
-    const articlesPage = await getArticlePageLocators(page);
-    await articlesPage.globalFeedTab.click();
-}
-
-export async function readFirstArticle(page: Page) {
-    const articlesPage = await getArticlePageLocators(page);
-    await articlesPage.previewArticleTitle.first().click();
-}
-
-async function typeSearchKeyword(page: Page, keyword) {
-    const articlesPage = await getArticlePageLocators(page);
-    await articlesPage.searchInput.fill(keyword)
-}
-
-async function applySearch(page: Page) {
-    const articlesPage = await getArticlePageLocators(page);
-    await articlesPage.applySearchBtn.click()
-}
-export async function followUser(page: Page) {
-    const articlesPage = await getArticlePageLocators(page);
-    await articlesPage.followBtn.click()
-}
-
-export async function searchArticleByName(page: Page, keyword) {
-    await typeSearchKeyword(page, keyword);
-    await applySearch(page)
-}
-
-
 // *** Editors PAGE Locators & Actions ***
 
 async function getEditorPageLocators(page: Page) {
@@ -95,7 +45,7 @@ async function getEditorPageLocators(page: Page) {
     };
 };
 
-export async function fillTitleEditor(page: Page, title) {
+async function fillTitleEditor(page: Page, title) {
     const editorPageLocators = await getEditorPageLocators(page);
     await editorPageLocators.title.fill(title);
 };
@@ -127,18 +77,18 @@ export async function createArticle(page: Page, title, description, body, tag) {
     await fillBodyEditor(page, body);
     await fillTagEditor(page, tag);
     await submitEditor(page);
-    await waitForEditBtnVisible(page);
+    await waitForArticleEditBtnVisible(page);
 };
 
-export async function waitForEditBtnVisible(page: Page) {
+async function waitForArticleEditBtnVisible(page: Page) {
     const editorPageLocators = await getEditorPageLocators(page);
-    await editorPageLocators.editBtn.waitFor({ state: 'visible', timeout: 3000 });
+    await editorPageLocators.editBtn.waitFor({ state: 'visible', timeout: 5000 });
 };
 
-export async function createMultipleArticles(page: Page) {
-    const titles = [];
+export async function createMultipleArticles(page: Page, articleQty) {
+    const myTitles = [];
     const randomNumber = Math.floor(Math.random() * 1000000);
-    for (let i = 1; i <= 10; i++) {
+    for (let i = 1; i <= articleQty; i++) {
         const title = `aqa1_${randomNumber}-${i}`;
         const description = `aqa1-${i}`;
         const body = `aqa1-${i}`;
@@ -146,10 +96,145 @@ export async function createMultipleArticles(page: Page) {
 
         await goToEditorPage(page);
         await createArticle(page, title, description, body, tag.toString());
-        titles.push(title);
-        //await waitForEditBtnVisible(page);
+        myTitles.push(title);
+        //await waitForArticleEditBtnVisible(page);
     }
-    return titles;
+    return myTitles
+};
+
+// *** Articles Home Page Locators & Actions *** 
+
+async function getArticlePageLocators(page: Page) {
+    const globalFeedTab = page.getByTestId('feed-tab-global');
+    const previewArticleTitle = page.getByTestId(/preview-title/);
+    const searchInput = page.getByTestId('home-search-input');
+    const followBtn = page.getByTestId('article-follow-button');
+    const applySearchBtn = page.getByTestId('home-filter-apply');
+    const paginationTxtLinks = page.getByTestId(/pagination-page/);
+    const paginationBar = page.getByTestId('pagination');
+
+    return {
+        globalFeedTab,
+        previewArticleTitle,
+        searchInput,
+        followBtn,
+        applySearchBtn,
+        paginationTxtLinks,
+        paginationBar
+    }
+};
+
+export async function goToGlobalFeed(page: Page) {
+    const articlesPage = await getArticlePageLocators(page);
+    await articlesPage.globalFeedTab.click();
 }
+
+async function readFirstArticle(page: Page) {
+    const articlesPage = await getArticlePageLocators(page);
+    await articlesPage.previewArticleTitle.first().click();
+}
+
+async function typeSearchKeyword(page: Page, keyword) {
+    const articlesPage = await getArticlePageLocators(page);
+    await articlesPage.searchInput.fill(keyword)
+}
+
+async function applySearch(page: Page) {
+    const articlesPage = await getArticlePageLocators(page);
+    await articlesPage.applySearchBtn.click()
+}
+
+export async function followUser(page: Page) {
+    const articlesPage = await getArticlePageLocators(page);
+    await articlesPage.followBtn.click()
+}
+
+export async function searchArticleByName(page: Page, keyword) {
+    await typeSearchKeyword(page, keyword);
+    await applySearch(page)
+}
+
+export async function goToArticleLongRead(page: Page, keyword) {
+    await searchArticleByName(page, keyword);
+    await readFirstArticle(page);
+}
+
+export async function waitForFirstArticleVisible(page: Page) {
+    const articlesPage = await getArticlePageLocators(page);
+    await articlesPage.previewArticleTitle.first().waitFor({ state: 'visible', timeout: 3000 });
+}
+
+export async function findArticlesAcrossGlobalPages(page: Page, myTitles) {
+    const articlesPage = await getArticlePageLocators(page);
+
+    const foundTitles = [];
+    const pagination = page.getByTestId(/pagination-page/);
+    const paginationCount = await pagination.count();
+
+    for (let i = 0; i < paginationCount; i++) {
+
+        const currentPage = pagination.nth(i);
+        const pageNumber = await pagination.nth(i).textContent();
+        console.log(`Go to Global page #: ${pageNumber}`);
+
+        await currentPage.click();
+        await waitForFirstArticleVisible(page);
+
+        const previewTitlesGlobalPage = await articlesPage.previewArticleTitle.allTextContents();
+
+        for (const title of previewTitlesGlobalPage) {
+            if (myTitles.includes(title)) {
+                console.log(`Found on Global page: ${pageNumber}: ${title}`);
+
+                if (!foundTitles.includes(title)) {
+                    foundTitles.push(title);
+                }
+            }
+        }
+        if (foundTitles.length === myTitles.length) break;
+    }
+
+    return foundTitles
+}
+
+export async function findArticlesAcrossFeedPages(page: Page, myTitles) {
+
+    const foundTitles = [];
+    const articlesPage = await getArticlePageLocators(page);
+    await waitForFirstArticleVisible(page);
+    const paginationPresent = await articlesPage.paginationBar.isVisible();
+
+    let pageCount = 1;
+
+    if (paginationPresent) {
+        pageCount = await articlesPage.paginationTxtLinks.count();
+    }
+
+    for (let i = 0; i < pageCount; i++) {
+        const pageNumber = i + 1;
+
+        if (i > 0) {
+
+            await articlesPage.paginationTxtLinks.nth(i).click();
+            await waitForFirstArticleVisible(page);
+            console.log(`Go to Feed Page #: ${pageNumber}`);
+        }
+
+        const previewTitlesFeedPage = await articlesPage.previewArticleTitle.allTextContents();
+
+        for (const title of previewTitlesFeedPage) {
+            if (myTitles.includes(title) && !foundTitles.includes(title)) {
+                console.log(`Found on Feed page ${pageNumber}: ${title}`);
+                foundTitles.push(title);
+            }
+        }
+
+        if (foundTitles.length === myTitles.length) break;
+    }
+
+    return foundTitles;
+}
+
+
 
 
