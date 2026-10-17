@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { agreeToTermsReg, fillConfirmPasswordReg, fillEmailLogin, fillEmailReg, fillPasswordLogin, fillPasswordReg, fillUsernameReg, submitLogin, submitLoginForm, submitReg, submitRegistrationForm } from './qa-dojo-articles-functions-page-actions-hw12'
+import { agreeToTermsReg, fillConfirmPasswordReg, fillEmailLogin, fillEmailReg, fillPasswordLogin, fillPasswordReg, fillUsernameReg, submitLogin, submitLoginForm, submitReg, submitRegistrationForm } from './hw12-qa-dojo-articles-functions-page-actions'
 
 test.describe('Registration', { tag: '@hw12:functions' }, () => {
     test.beforeEach(async ({ page }) => {
