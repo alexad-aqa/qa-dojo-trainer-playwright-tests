@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test'
-import { registerUser } from './qa-dojo-articles-functions-page-actions-hw12'
-import { goToArticlesHomePage, goToGlobalFeed, goToArticleLongRead, followUser, createMultipleArticles, findArticlesAcrossGlobalPages, findArticlesAcrossFeedPages, waitForFirstArticleVisible } from './qa-dojo-articles-functions-arrays-editor-page-actions-hw14'
+import { registerUser } from './hw12-qa-dojo-articles-functions-page-actions'
+import { goToArticlesHomePage, goToGlobalFeed, goToArticleLongRead, followUser, createMultipleArticles, findArticlesAcrossGlobalPages, findArticlesAcrossFeedPages, waitForFirstArticleVisible } from './hw14-qa-dojo-articles-functions-arrays-editor-page-actions'
 
 
 test.describe('Articles Create', { tag: '@hw14:functions/arrays' }, () => {
