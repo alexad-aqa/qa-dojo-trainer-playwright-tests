@@ -64,7 +64,6 @@ test.describe('Zara', { tag: '@hw23:cookies' }, () => {
         if (isTarget) {
           return {
             ...cookie,
-            name: 'CookiesConsent-owle',
             value: 'updated',
           };
         }
@@ -102,10 +101,8 @@ test.describe('Zara', { tag: '@hw23:cookies' }, () => {
       );
 
       if (myFoundCookie2) {
-        const { size, ...cleanCookie } = myFoundCookie2;
-
         const myUpdatedCookie2 = {
-          ...cleanCookie,
+          ...myFoundCookie2,
           value: 'updated-#2',
         };
 
