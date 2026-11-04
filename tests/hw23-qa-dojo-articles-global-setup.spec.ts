@@ -1,10 +1,10 @@
-import { test } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import {
   createMultipleArticles,
   goToArticlesHomePage,
   goToGlobalFeed,
-  waitForFirstArticleVisible,
   openArticlesPage,
+  findArticlesAcrossGlobalPages,
 } from './hw14-qa-dojo-articles-functions-arrays-editor-page-actions';
 
 test.describe('Articles Create', { tag: '@hw23:global-setup' }, () => {
@@ -16,9 +16,27 @@ test.describe('Articles Create', { tag: '@hw23:global-setup' }, () => {
     page,
   }) => {
     await openArticlesPage(page);
-    await createMultipleArticles(page, 3);
+    const myArticleTitles = await createMultipleArticles(page, 3);
+    console.log(myArticleTitles);
     await goToArticlesHomePage(page);
     await goToGlobalFeed(page);
-    await waitForFirstArticleVisible(page);
+
+    const latestTitle = myArticleTitles[myArticleTitles.length - 1];
+    await expect(page.locator(`text=${latestTitle}`)).toBeVisible({
+      timeout: 7000,
+    });
+
+    const foundArticleTitlesOnGlobal = await findArticlesAcrossGlobalPages(
+      page,
+      myArticleTitles,
+    );
+
+    expect.soft(foundArticleTitlesOnGlobal.length).toBe(myArticleTitles.length);
+
+    for (const title of myArticleTitles) {
+      expect
+        .soft(foundArticleTitlesOnGlobal, `${title} not found on Global Page`)
+        .toContain(title);
+    }
   });
 });
