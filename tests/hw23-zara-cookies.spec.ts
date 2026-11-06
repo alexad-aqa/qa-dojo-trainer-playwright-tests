@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 test.describe('Zara', { tag: '@hw23:cookies' }, () => {
   test.use({ storageState: { cookies: [], origins: [] } });
 
-  test('Zara: get cookies and check length', async ({ page, context }) => {
+  test('Zara: Cookies Test', async ({ page, context }) => {
     await test.step('Zara: GET cookies & check length', async ({}) => {
       await page.goto('https://www.zara.com/es/en/');
       await page.getByRole('button', { name: 'Accept All Cookies' }).click();
@@ -43,6 +43,17 @@ test.describe('Zara', { tag: '@hw23:cookies' }, () => {
       expect(myFoundCookie).toBeTruthy();
       expect(myFoundCookie.name).toBe('CookiesConsent-owle');
       expect(myFoundCookie.value).toBe('C0001%3BC0002%3BC0003%3BC0005');
+
+      //* assertion option 2
+      // expect(cookie).toContainEqual(
+      //   expect.objectContaining({
+      //     name: 'CookiesConsent-owle',
+      //     value: 'C0001%3BC0002%3BC0003%3BC0005',
+      //   }),
+      // );
+
+      //* assertion option 3
+      //expect(myFoundCookie).toEqual(myCookie[0]);
 
       console.log(
         '----- MY CREATed COOKIE found ------',
