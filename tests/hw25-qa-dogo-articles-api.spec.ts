@@ -1,4 +1,6 @@
 import { test, expect } from '../fixtures/my-fixture';
+import { ProfilePage } from '../page-objects/pages/ProfilePage';
+import { SettingsPage } from '../page-objects/pages/SettingsPage';
 
 test.describe(
   'hw25: QA Dojo: New User + Settings Update',
@@ -9,10 +11,11 @@ test.describe(
     test('User Registered via API & Profile Photo updated via UI', async ({
       authTokenOnReg,
       authedPage,
-      profilePage,
-      settingsPage,
     }) => {
       const { token, username, email, response } = authTokenOnReg;
+
+      const profilePage = new ProfilePage(authedPage);
+      const settingsPage = new SettingsPage(authedPage);
 
       await test.step('User Registered, Auth Token exists/and not NULL', async ({}) => {
         // console.log(token);
@@ -44,8 +47,8 @@ test.describe(
 
       const prefix =
         await test.step('Go To Profile Settings & Verify User Data', async () => {
-          //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
-          const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
+          const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
+          //const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
           await settingsPage.uploadFile(pathToFile);
           const prefix = await settingsPage.getAvatarAddressPrefix();
           await settingsPage.submitSettings();
@@ -55,7 +58,7 @@ test.describe(
 
       await test.step('Verifications after Profile Settings Page Reload', async () => {
         const urlAfterSubmit = authedPage.url();
-
+        console.log(urlAfterSubmit);
         if (!urlAfterSubmit.includes('/articles/settings')) {
           await authedPage.goto('/articles/settings', {
             waitUntil: 'domcontentloaded',
@@ -63,6 +66,7 @@ test.describe(
         } else {
           await authedPage.reload({ waitUntil: 'domcontentloaded' });
         }
+        await settingsPage.verifyAvatarUploaded(prefix);
       });
     });
   },
