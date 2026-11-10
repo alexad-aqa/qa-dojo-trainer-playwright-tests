@@ -7,6 +7,8 @@ export class SettingsPage extends BasePage {
   private readonly avatarAddressInput;
   private readonly settingsAvatarPreview;
   private readonly settingsAvatarFile;
+  private readonly usernameInput;
+  private readonly emailInput;
 
   constructor(page: Page) {
     super(page);
@@ -16,6 +18,8 @@ export class SettingsPage extends BasePage {
     this.settingsAvatarPreview = page.getByTestId('settings-avatar-preview');
     this.avatarAddressInput = page.getByTestId('settings-image');
     this.settingsAvatarFile = page.getByTestId('settings-avatar-file');
+    this.usernameInput = page.getByTestId('settings-username');
+    this.emailInput = page.getByTestId('settings-email');
   }
 
   async uploadFile(file) {
@@ -34,5 +38,13 @@ export class SettingsPage extends BasePage {
     const prefixOnly = fullValue.split(',')[0];
     console.log('this is file address prefix on Settings ' + prefixOnly);
     return prefixOnly;
+  }
+
+  async verifyUsername(username) {
+    await expect(this.usernameInput).toHaveValue(username);
+  }
+
+  async verifyEmail(email) {
+    await expect(this.emailInput).toHaveValue(email);
   }
 }

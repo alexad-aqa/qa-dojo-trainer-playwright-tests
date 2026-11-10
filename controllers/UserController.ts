@@ -14,9 +14,9 @@ export class UserController {
       failOnStatusCode: true,
     });
 
-    const regRequestJson = await responseOnRegRequest.json();
-    const authTokenOnReg = regRequestJson.user.token;
-    return authTokenOnReg;
+    const responseJson = await responseOnRegRequest.json();
+    const response = responseJson.user;
+    return response;
   }
 
   async loginUserApi(userLoginData) {

@@ -39,20 +39,27 @@ export const test = playwrightTest.extend<MyFixtures>({
   //* create STATES Before Tests
 
   authTokenOnReg: async ({ request }, use) => {
-    //const apiContext = await request.newContext();
     const userController = new UserController(request);
 
     const username = `aqa_${Date.now()}`;
+    const email = `user_${Date.now()}@example.com`;
 
-    const tokenOnReg = await userController.registerUserApi({
+    const response = await userController.registerUserApi({
       user: {
         username: username,
-        email: `user_${Date.now()}@example.com`,
+        email: email,
         password: 'password123',
       },
     });
 
-    await use({ token: tokenOnReg, username: username });
+    const tokenOnReg = response.token;
+
+    await use({
+      token: tokenOnReg,
+      username: username,
+      email: email,
+      response: response,
+    });
   },
 
   authTokenOnLogin: async ({ request }, use) => {

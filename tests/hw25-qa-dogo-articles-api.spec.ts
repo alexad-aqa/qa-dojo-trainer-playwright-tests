@@ -12,13 +12,14 @@ test.describe(
       profilePage,
       settingsPage,
     }) => {
-      const { token, username } = authTokenOnReg;
+      const { token, username, email, response } = authTokenOnReg;
 
       await test.step('User Registered, Auth Token exists/and not NULL', async ({}) => {
         // console.log(token);
         //console.log(username);
-        expect(token).toBeDefined();
-        expect(token).not.toBeNull();
+        expect(response.token).toBeTruthy();
+        expect(response.username).toBe(username);
+        expect(response.email).toBe(email);
       });
 
       await test.step('Auth Token set in LocalStorage & Page Context created & Profile Page Opened ', async () => {
@@ -37,11 +38,13 @@ test.describe(
 
       const prefix =
         await test.step('Go To Profile Settings & Upload file', async () => {
+          //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
+          const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
           await profilePage.openProfileSettingPage();
-          await settingsPage.uploadFile('test-files/owl.jpeg');
-          // await settingsPage.uploadFile(
-          //   'tests/qa-dojo-trainer-hw/test-files/owl.jpeg',
-          // );
+          await settingsPage.verifyUsername(username);
+          await settingsPage.verifyEmail(email);
+
+          await settingsPage.uploadFile(pathToFile);
           const prefix = await settingsPage.getAvatarAddressPrefix();
           await settingsPage.submitSettings();
           await profilePage.verifyAvatar(prefix);
