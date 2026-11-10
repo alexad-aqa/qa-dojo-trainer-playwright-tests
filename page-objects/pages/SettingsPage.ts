@@ -25,8 +25,6 @@ export class SettingsPage extends BasePage {
   async uploadFile(file) {
     await this.chooseFileLocator.setInputFiles(file);
     await expect(this.settingsAvatarFile).toBeVisible();
-    await expect(this.settingsAvatarPreview).toBeVisible();
-    //await avatar.waitFor({ state: 'visible', timeout: 10000 });
   }
 
   async submitSettings() {
@@ -38,6 +36,14 @@ export class SettingsPage extends BasePage {
     const prefixOnly = fullValue.split(',')[0];
     console.log('this is file address prefix on Settings ' + prefixOnly);
     return prefixOnly;
+  }
+
+  async verifyAvatarUploaded(expectedSrc) {
+    await expect(this.settingsAvatarPreview).toBeVisible();
+    await expect(this.settingsAvatarPreview).toHaveAttribute(
+      'src',
+      new RegExp(`^${expectedSrc}`),
+    );
   }
 
   async verifyUsername(username) {

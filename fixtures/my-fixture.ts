@@ -123,6 +123,7 @@ export const test = playwrightTest.extend<MyFixtures>({
     const myState = localStorageSetup(token);
     const context = await browser.newContext({ storageState: myState });
     const page = await context.newPage();
+    await page.goto('');
     await use(page);
 
     // await page.close();
