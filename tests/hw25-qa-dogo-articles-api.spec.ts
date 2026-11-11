@@ -45,16 +45,15 @@ test.describe(
         await settingsPage.verifyEmail(email);
       });
 
-      const prefix =
-        await test.step('Go To Profile Settings & Verify User Data', async () => {
-          //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
-          const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
-          await settingsPage.uploadFile(pathToFile);
-          const prefix = await settingsPage.getAvatarAddressPrefix();
-          await settingsPage.submitSettings();
-          await profilePage.verifyAvatar(prefix);
-          return prefix;
-        });
+      const prefix = await test.step('Upload Avatar', async () => {
+        //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
+        const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
+        await settingsPage.uploadFile(pathToFile);
+        const prefix = await settingsPage.getAvatarAddressPrefix();
+        await settingsPage.submitSettings();
+        await profilePage.verifyAvatar(prefix);
+        return prefix;
+      });
 
       await test.step('Verifications after Profile Settings Page Reload', async () => {
         const urlAfterSubmit = authedPage.url();
