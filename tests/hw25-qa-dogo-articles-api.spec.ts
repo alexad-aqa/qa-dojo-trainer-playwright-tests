@@ -47,8 +47,8 @@ test.describe(
 
       const prefix =
         await test.step('Go To Profile Settings & Verify User Data', async () => {
-          const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
-          //const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
+          //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
+          const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
           await settingsPage.uploadFile(pathToFile);
           const prefix = await settingsPage.getAvatarAddressPrefix();
           await settingsPage.submitSettings();
@@ -60,11 +60,10 @@ test.describe(
         const urlAfterSubmit = authedPage.url();
         console.log(urlAfterSubmit);
         if (!urlAfterSubmit.includes('/articles/settings')) {
-          await authedPage.goto('/articles/settings', {
-            waitUntil: 'domcontentloaded',
-          });
+          //await authedPage.goto('/articles/settings');
+          await profilePage.openProfileSettingPage();
         } else {
-          await authedPage.reload({ waitUntil: 'domcontentloaded' });
+          await authedPage.reload();
         }
         await settingsPage.verifyAvatarUploaded(prefix);
       });

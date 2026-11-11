@@ -17,6 +17,7 @@ export class ProfilePage extends BasePage {
 
   async openProfileSettingPage() {
     await this.editProfileLocator.click();
+    await this.page.waitForURL('/articles/settings');
   }
 
   async verifyAvatar(expectedSrc) {

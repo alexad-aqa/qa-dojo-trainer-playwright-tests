@@ -15,7 +15,9 @@ export class SettingsPage extends BasePage {
 
     this.chooseFileLocator = page.getByTestId('settings-avatar-file');
     this.submitSettingsLocator = page.getByTestId('settings-submit');
-    this.settingsAvatarPreview = page.getByTestId('settings-avatar-preview');
+    this.settingsAvatarPreview = page
+      .getByTestId('settings-avatar-preview')
+      .locator('img');
     this.avatarAddressInput = page.getByTestId('settings-image');
     this.settingsAvatarFile = page.getByTestId('settings-avatar-file');
     this.usernameInput = page.getByTestId('settings-username');
