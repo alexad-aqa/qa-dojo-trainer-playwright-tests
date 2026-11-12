@@ -1,5 +1,10 @@
-
-import { expectSuccessMsg, expectErrorAlert, expectErrorNameRequired, expectErrorEmailRequired, expectErrorMessageRequired } from './hw15-qa-dojo-articles-feedback-objects-page-actions'
+import {
+  expectSuccessMsg,
+  expectErrorAlert,
+  expectErrorNameRequired,
+  expectErrorEmailRequired,
+  expectErrorMessageRequired,
+} from './hw15-qa-dojo-articles-feedback-objects-page-actions';
 
 export const testData = [
   {
@@ -11,7 +16,7 @@ export const testData = [
       message: 'Found mistakes on Article Page',
       subject: 'bug',
       priority: 'high',
-      attachment: 'qa-dojo-trainer-hw/tests/test-files/feedback.png',
+      attachment: 'qa-dojo-trainer-hw/test-files/feedback.png',
       sendCopyState: true,
     },
     verify: expectSuccessMsg,
@@ -39,15 +44,14 @@ export const testData = [
       message: '',
       subject: 'feature',
       priority: 'low',
-      attachment: 'qa-dojo-trainer-hw/tests/test-files/feedback.png',
+      attachment: 'qa-dojo-trainer-hw/test-files/feedback.png',
       sendCopyState: true,
     },
     verify: async function (page) {
       await expectErrorAlert(page);
       await expectErrorNameRequired(page);
       await expectErrorEmailRequired(page);
-      await expectErrorMessageRequired(page)
-    }
-
+      await expectErrorMessageRequired(page);
+    },
   },
 ];
