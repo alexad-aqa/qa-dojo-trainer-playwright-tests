@@ -7,7 +7,10 @@ import {
 import { UserController } from '../controllers/UserController';
 import { BasePage } from '../page-objects/pages/BasePage';
 import { ProfilePage } from '../page-objects/pages/ProfilePage';
+import { EditorsPage } from '../page-objects/pages/EditorsPage';
 import { SettingsPage } from '../page-objects/pages/SettingsPage';
+import { ArticlesHomePage } from '../page-objects/pages/ArticlesHomePage';
+import { ArticleLongReadPage } from '../page-objects/pages/ArticleLOngReadPage';
 
 type MyFixtures = {
   authTokenOnReg: any;
@@ -18,6 +21,9 @@ type MyFixtures = {
   basePage: BasePage;
   profilePage: ProfilePage;
   settingsPage: SettingsPage;
+  editorsPage: EditorsPage;
+  articlesHomePage: ArticlesHomePage;
+  articleLongReadPage: ArticleLongReadPage;
   authedPage: any;
 };
 
@@ -28,8 +34,19 @@ export const test = playwrightTest.extend<MyFixtures>({
     await use(new BasePage(page));
   },
 
-  profilePage: async ({ authedPage }, use) => {
-    await use(new ProfilePage(authedPage));
+  articleLongReadPage: async ({ page }, use) => {
+    await use(new ArticleLongReadPage(page));
+  },
+  editorsPage: async ({ page }, use) => {
+    await use(new EditorsPage(page));
+  },
+
+  articlesHomePage: async ({ page }, use) => {
+    await use(new ArticlesHomePage(page));
+  },
+
+  profilePage: async ({ page }, use) => {
+    await use(new ProfilePage(page));
   },
 
   settingsPage: async ({ authedPage }, use) => {
@@ -42,7 +59,7 @@ export const test = playwrightTest.extend<MyFixtures>({
     const userController = new UserController(request);
 
     const username = `aqa_${Date.now()}`;
-    const email = `user_${Date.now()}@example.com`;
+    const email = `aqa_${Date.now()}@example.com`;
 
     const response = await userController.registerUserApi({
       user: {
@@ -123,11 +140,11 @@ export const test = playwrightTest.extend<MyFixtures>({
     const myState = localStorageSetup(token);
     const context = await browser.newContext({ storageState: myState });
     const page = await context.newPage();
-    await page.goto('');
+    //await page.goto('');
     await use(page);
 
-    // await page.close();
-    // await context.close();
+    await page.close();
+    await context.close();
   },
 });
 
