@@ -13,6 +13,7 @@ npx playwright codegen http://104.168.59.50/articles
 ## Run tests
 
 npx playwright test qa-dojo-trainer-hw/tests/hw25-qa-dogo-articles-api.spec.ts
+npx playwright test tests/hw26-qa-dogo-articles-api-route.spec.ts --ui
 
 ## Report
 
@@ -28,8 +29,8 @@ Before Test:
 
 2. apiContext #1 created via apiClientRegContext Fixture using authTokenOnReg
    --- in This Context: - Multiple Articles (3) Created via /api/articles (using Fixture);
-   =>> Article Names fetched From Response and saved into var - Verification that articles created via API by querying /api/articles?sort=newest&limit=n&offset=n  
-    - Context Closed with await apiContext.dispose();
+   =>> Article Names fetched From Response and saved into var - Verification that articles created via API by querying /api/articles?sort=newest&limit=n&offset=n
+   - Context Closed with await apiContext.dispose();
 
 Test Steps:
 API
