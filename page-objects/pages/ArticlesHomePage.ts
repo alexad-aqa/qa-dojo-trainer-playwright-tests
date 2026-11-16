@@ -5,13 +5,15 @@ export class ArticlesHomePage extends BasePage {
   private readonly globalFeedTab;
   protected pagePath = '';
   private readonly previewArticleTitle;
-  readonly articleLIst;
+  readonly articleList;
+  readonly articlePreviewCard;
 
   constructor(page: Page) {
     super(page);
     this.globalFeedTab = page.getByTestId('feed-tab-global');
     this.previewArticleTitle = page.getByTestId(/preview-title/);
-    this.articleLIst = page.getByTestId('article-list');
+    this.articleList = page.getByTestId('article-list');
+    this.articlePreviewCard = page.getByTestId(/^article-preview-/);
   }
 
   async goToGlobalFeed() {

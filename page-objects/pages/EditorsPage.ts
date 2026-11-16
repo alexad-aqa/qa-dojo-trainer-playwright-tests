@@ -49,7 +49,7 @@ export class EditorsPage extends BasePage {
     await this.fillArticleTitle(title);
     await this.fillArticleDescription(description);
     await this.fillArticleBody(body);
-    await this.fillArticleTag(tag.toString());
+    await this.fillArticleTag(tag);
     await this.submitArticleData();
     await this.waitForArticleEditBtnVisible();
   }

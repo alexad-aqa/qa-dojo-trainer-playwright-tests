@@ -1,21 +1,15 @@
 import { test, expect } from '../fixtures/my-fixture';
-import { ArticleLongReadPage } from '../page-objects/pages/ArticleLOngReadPage';
+import { ArticleLongReadPage } from '../page-objects/pages/ArticleLongReadPage';
 import { ArticlesHomePage } from '../page-objects/pages/ArticlesHomePage';
 import { EditorsPage } from '../page-objects/pages/EditorsPage';
-import { ProfilePage } from '../page-objects/pages/ProfilePage';
-import { SettingsPage } from '../page-objects/pages/SettingsPage';
 
 test.describe(
-  'hw26: QA Dojo: Create Article',
+  'hw26: QA Dojo: API route mocking',
   { tag: '@hw26:api-route' },
   () => {
     test.use({ storageState: { cookies: [], origins: [] } });
 
-    test('Articles Data Updated via route.continue', async ({
-      authedPage,
-      //articlesHomePage,
-      //editorsPage,
-    }) => {
+    test('Articles Data Updated via route.continue', async ({ authedPage }) => {
       const articlesHomePage = new ArticlesHomePage(authedPage);
       const editorsPage = new EditorsPage(authedPage);
       const articleLongReadPage = new ArticleLongReadPage(authedPage);
@@ -24,7 +18,7 @@ test.describe(
       const title = `aqa_${randomNumber}`;
       const description = `aqa`;
       const body = `aqa`;
-      const tag = ['automation, api, route'];
+      const tag = ['automation', 'api', 'route'];
 
       const articlePayload = {
         article: {
@@ -50,14 +44,13 @@ test.describe(
 
           await route.continue({
             postData: articlePayload,
-            headers: request.headers(),
-            method: request.method(),
-            url: request.url(),
           });
         },
       );
+      //* Validations on Article Long Read Page
 
-      await editorsPage.createArticle(title, description, body, tag);
+      await editorsPage.createArticle(title, description, body, tag.join(','));
+
       await expect(articleLongReadPage.articleTitle).toHaveText(
         articlePayload.article.title,
       );
@@ -68,25 +61,26 @@ test.describe(
         articlePayload.article.body,
       );
       await expect(articleLongReadPage.articleTags).toContainText(
-        articlePayload.article.tagList.toString(),
+        articlePayload.article.tagList,
       );
+
       await articleLongReadPage.header.goToArticlesHomePage();
       await articlesHomePage.goToGlobalFeed();
 
-      await expect(articlesHomePage.articleLIst).toContainText(
-        articlePayload.article.title.toString(),
+      //* Validations on Articles Home Page > Global Tab
+      await expect(articlesHomePage.articleList).toContainText(
+        articlePayload.article.title,
       );
-
-      await expect(articlesHomePage.articleLIst).toContainText(
-        articlePayload.article.description.toString(),
+      await expect(articlesHomePage.articleList).toContainText(
+        articlePayload.article.description,
       );
+      await expect(articlesHomePage.articleList).not.toContainText(title);
     });
 
     test('Article Data is mocked with route.fulfill', async ({
       authedPage,
     }) => {
       const articlesHomePage = new ArticlesHomePage(authedPage);
-
       const mockedArticle = {
         slug: 'aqaupdviaroute958719',
         title: 'aqa_UPD_via_FULFILL',
@@ -108,15 +102,13 @@ test.describe(
           following: false,
         },
       };
+
       await authedPage.route(
         (url) => url.pathname === '/api/articles',
-        //'**/api/articles?**', // без query
         async (route, request) => {
           if (request.method() !== 'GET') {
             return route.continue();
           }
-          // async (route, request) => {
-          //   const response = await route.fetch();
 
           await route.fulfill({
             json: { articles: [mockedArticle], articlesCount: 1 },
@@ -126,13 +118,14 @@ test.describe(
       );
 
       await authedPage.goto(`/articles/`);
-      await authedPage.waitForResponse('**/api/articles?**');
-      await expect(articlesHomePage.articleLIst).toContainText(
-        mockedArticle.title.toString(),
+
+      await expect(articlesHomePage.articlePreviewCard).toHaveCount(1);
+      await expect(articlesHomePage.articleList).toContainText(
+        mockedArticle.title,
       );
 
-      await expect(articlesHomePage.articleLIst).toContainText(
-        mockedArticle.description.toString(),
+      await expect(articlesHomePage.articleList).toContainText(
+        mockedArticle.description,
       );
     });
   },
