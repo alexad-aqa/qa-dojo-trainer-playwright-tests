@@ -1,6 +1,7 @@
 import { test, expect } from '../fixtures/my-fixture';
 import { ProfilePage } from '../page-objects/pages/ProfilePage';
 import { SettingsPage } from '../page-objects/pages/SettingsPage';
+import path from 'path';
 
 test.describe(
   'hw25: QA Dojo: New User + Settings Update',
@@ -18,8 +19,6 @@ test.describe(
       const settingsPage = new SettingsPage(authedPage);
 
       await test.step('User Registered, Auth Token exists/and not NULL', async ({}) => {
-        // console.log(token);
-        //console.log(username);
         expect(response.token).toBeTruthy();
         expect(response.username).toBe(username);
         expect(response.email).toBe(email);
@@ -46,8 +45,9 @@ test.describe(
       });
 
       const prefix = await test.step('Upload Avatar', async () => {
-        //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code
-        const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
+        const pathToFile = path.resolve(__dirname, '../test-files/owl.jpeg');
+        //const pathToFile = 'qa-dojo-trainer-hw/test-files/owl.jpeg'; //works if run via Run code/Test Runner
+        //const pathToFile = 'test-files/owl.jpeg'; // works if run via npx ...
         await settingsPage.uploadFile(pathToFile);
         const prefix = await settingsPage.getAvatarAddressPrefix();
         await settingsPage.submitSettings();
