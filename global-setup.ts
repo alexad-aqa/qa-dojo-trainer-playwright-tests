@@ -11,7 +11,7 @@ export default async function globalSetup(config: FullConfig) {
   }
 
   if (!email || !password) {
-    throw new Error('Задай TEST_USER_EMAIL і TEST_USER_PASSWORD');
+    throw new Error('Задай TEST_USER і TEST_USER');
   }
 
   await mkdir('playwright/.auth', { recursive: true });
