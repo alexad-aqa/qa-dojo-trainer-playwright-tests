@@ -7,9 +7,13 @@ test.describe('Zara', { tag: '@hw23:cookies' }, () => {
     await test.step('Zara: GET cookies & check length', async ({}) => {
       await page.goto('https://www.zara.com/es/en/');
       await page.getByRole('button', { name: 'Accept All Cookies' }).click();
-      await page
-        .getByRole('button', { name: 'Yes, continue on Spain' })
-        .click();
+      const continueButton = page.getByRole('button', {
+        name: 'Yes, continue on Spain',
+      });
+
+      if (await continueButton.isVisible()) {
+        await continueButton.click();
+      }
 
       const cookies = await context.cookies();
       console.log('----- INITIAL GET cookies count ------ ' + cookies.length);
