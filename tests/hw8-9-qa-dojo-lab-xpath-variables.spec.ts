@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Sorting+ChBox+Xpath', { tag: '@hw8-9:xpath' }, () => {
+  test.use({ storageState: { cookies: [], origins: [] } });
   let table;
 
   let testColItems;

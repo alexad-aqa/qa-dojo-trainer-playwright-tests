@@ -10,7 +10,7 @@ import { ProfilePage } from '../page-objects/pages/ProfilePage';
 import { EditorsPage } from '../page-objects/pages/EditorsPage';
 import { SettingsPage } from '../page-objects/pages/SettingsPage';
 import { ArticlesHomePage } from '../page-objects/pages/ArticlesHomePage';
-import { ArticleLongReadPage } from '../page-objects/pages/ArticleLOngReadPage';
+import { ArticleLongReadPage } from '../page-objects/pages/ArticleLongReadPage';
 
 type MyFixtures = {
   authTokenOnReg: any;
@@ -85,8 +85,8 @@ export const test = playwrightTest.extend<MyFixtures>({
 
     const tokenOnLogin = await userController.loginUserApi({
       user: {
-        email: 'olena@example.com',
-        password: 'password',
+        email: process.env.TEST_USER!,
+        password: process.env.TEST_PASSWORD!,
       },
     });
 

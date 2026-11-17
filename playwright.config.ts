@@ -1,4 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+const targetEnv = process.env.TEST_ENV || 'dev';
+dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
 
 /**
  * Read environment variables from file.
@@ -27,6 +32,7 @@ export default defineConfig({
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     storageState: 'playwright/.auth/user.json',
+    baseURL: process.env.BASE_URL || 'http://104.168.59.50',
     /* Base URL to use in actions like `await page.goto('')`. */
     //baseURL: 'http://local-host',
 
@@ -38,7 +44,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], baseURL: 'http://104.168.59.50' },
+      use: { ...devices['Desktop Chrome'] },
     },
 
     /* Test against mobile viewports. */
