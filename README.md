@@ -12,6 +12,7 @@ npx playwright codegen http://104.168.59.50/articles
 
 ## Run tests
 
+npx playwright test
 npx playwright test qa-dojo-trainer-hw/tests/hw25-qa-dogo-articles-api.spec.ts
 npx playwright test tests/hw26-qa-dogo-articles-api-route.spec.ts --ui
 

@@ -47,5 +47,7 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           name: playwright-report-${{ github.event.inputs.environment || 'dev' }}
-          path: playwright-report/
+          path: |
+            playwright-report/
+            playwright-report-json/
           retention-days: 30

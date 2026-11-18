@@ -4,6 +4,7 @@ import path from 'path';
 
 const targetEnv = process.env.TEST_ENV || 'dev';
 dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
+const isCI = !!process.env.CI;
 
 /**
  * Read environment variables from file.
@@ -28,7 +29,17 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: isCI
+    ? [
+        ['github'],
+        ['html', { outputFolder: 'playwright-report', open: 'never' }],
+        ['json', { outputFile: 'playwright-report-json/report.json' }],
+      ]
+    : [
+        ['list'],
+        ['html', { outputFolder: 'playwright-report', open: 'on-failure' }],
+      ],
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     storageState: 'playwright/.auth/user.json',
@@ -43,8 +54,11 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'QA-DOJO',
+      use: {
+        ...devices['Desktop Chrome'],
+        storageState: 'playwright/.auth/user.json',
+      },
     },
 
     /* Test against mobile viewports. */

@@ -1,5 +1,6 @@
 import { mkdir } from 'node:fs/promises';
 import { chromium, expect, type FullConfig } from '@playwright/test';
+import path from 'path';
 
 export default async function globalSetup(config: FullConfig) {
   const { baseURL, storageState } = config.projects[0].use;
@@ -14,7 +15,9 @@ export default async function globalSetup(config: FullConfig) {
     throw new Error('Задай TEST_USER і TEST_USER');
   }
 
-  await mkdir('playwright/.auth', { recursive: true });
+  const authDir = path.resolve(__dirname, '../playwright/.auth');
+  await mkdir(authDir, { recursive: true });
+  //await mkdir('playwright/.auth', { recursive: true });
   const browser = await chromium.launch();
 
   try {
