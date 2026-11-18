@@ -12,10 +12,10 @@ export default async function globalSetup(config: FullConfig) {
   }
 
   if (!email || !password) {
-    throw new Error('Задай TEST_USER і TEST_USER');
+    throw new Error('Задай TEST_USER і TEST_PASSWORD');
   }
 
-  const authDir = path.resolve(__dirname, '../playwright/.auth');
+  const authDir = path.resolve(__dirname, 'playwright/.auth');
   await mkdir(authDir, { recursive: true });
   //await mkdir('playwright/.auth', { recursive: true });
   const browser = await chromium.launch();

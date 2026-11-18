@@ -4,6 +4,7 @@ import path from 'path';
 
 const targetEnv = process.env.TEST_ENV || 'dev';
 dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
+const authFile = path.resolve(__dirname, 'playwright/.auth/user.json');
 
 /**
  * Read environment variables from file.
@@ -18,7 +19,7 @@ dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
  */
 export default defineConfig({
   testDir: './tests',
-  globalSetup: './global-setup.ts',
+  globalSetup: './global-setup-api.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
@@ -41,13 +42,14 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    storageState: 'playwright/.auth/user.json',
+    //storageState: 'playwright/.auth/user.json',
     baseURL: process.env.BASE_URL || 'http://104.168.59.50',
     /* Base URL to use in actions like `await page.goto('')`. */
     //baseURL: 'http://local-host',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    storageState: authFile,
   },
 
   /* Configure projects for major browsers */
@@ -56,7 +58,6 @@ export default defineConfig({
       name: 'QA-DOJO',
       use: {
         ...devices['Desktop Chrome'],
-        storageState: 'playwright/.auth/user.json',
       },
     },
 
