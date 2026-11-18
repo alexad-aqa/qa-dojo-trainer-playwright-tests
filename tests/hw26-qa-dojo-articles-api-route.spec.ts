@@ -7,7 +7,6 @@ test.describe(
   'hw26: QA Dojo: API route mocking',
   { tag: '@hw26:api-route' },
   () => {
-
     test('Articles Data Updated via route.continue', async ({ authedPage }) => {
       const articlesHomePage = new ArticlesHomePage(authedPage);
       const editorsPage = new EditorsPage(authedPage);
@@ -24,13 +23,15 @@ test.describe(
           title: `aqa_UPD_via_ROUTE${randomNumber}`,
           description: 'aqa UPD_via_ROUTE',
           body: 'aqa UPD_via_ROUTE',
-          tagList: ['automation, api, route'],
+          tagList: ['automation', 'api', 'route'],
           category: 'general',
           visibility: 'public',
           allowComments: true,
           cover: '',
         },
       };
+
+      const expectedTags = [...articlePayload.article.tagList].sort();
 
       await authedPage.goto(`/articles/`);
       await articlesHomePage.header.goToEditorPage();
@@ -59,9 +60,7 @@ test.describe(
       await expect(articleLongReadPage.articleBody).toContainText(
         articlePayload.article.body,
       );
-      await expect(articleLongReadPage.articleTags).toContainText(
-        articlePayload.article.tagList,
-      );
+      await expect(articleLongReadPage.articleTags).toHaveText(expectedTags);
 
       await articleLongReadPage.header.goToArticlesHomePage();
       await articlesHomePage.goToGlobalFeed();

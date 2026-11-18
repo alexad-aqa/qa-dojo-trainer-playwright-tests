@@ -12,7 +12,7 @@ export class ArticleLongReadPage extends BasePage {
     super(page);
     this.articleTitle = page.getByTestId('article-title');
     this.articleBody = page.getByTestId('article-body');
-    this.articleTags = page.getByTestId('article-tags');
+    this.articleTags = page.getByTestId('article-tags').locator('li');
     this.articleDescription = page.locator('article > p').nth(1);
   }
 

@@ -1,11 +1,6 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Zara', { tag: '@hw23:cookies' }, () => {
-  // test.use({
-  //   locale: 'en-GB',
-  //   timezoneId: 'Europe/Kyiv',
-  // });
-
   test('Zara: Cookies Test', async ({ page, context }) => {
     await test.step('Zara: GET cookies & check length', async ({}) => {
       await page.goto('https://www.zara.com/es/en/');
