@@ -4,7 +4,6 @@ import path from 'path';
 
 const targetEnv = process.env.TEST_ENV || 'dev';
 dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
-const isCI = !!process.env.CI;
 
 /**
  * Read environment variables from file.
@@ -29,7 +28,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: isCI
+  reporter: !!process.env.CI
     ? [
         ['github'],
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
