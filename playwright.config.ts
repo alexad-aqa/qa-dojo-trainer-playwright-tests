@@ -47,7 +47,8 @@ export default defineConfig({
     //baseURL: 'http://local-host',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: process.env.CI ? 'on-first-retry' : 'off',
+    screenshot: 'only-on-failure',
     // storageState is NOT set globally: tests start logged out.
     // Tests that need login opt in with: test.use({ storageState: 'playwright/.auth/user.json' })
   },
