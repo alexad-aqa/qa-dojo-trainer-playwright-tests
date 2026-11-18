@@ -7,7 +7,6 @@ test.describe(
   'hw25: QA Dojo: New User + Settings Update',
   { tag: '@hw25:api' },
   () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
 
     test('User Registered via API & Profile Photo updated via UI', async ({
       authTokenOnReg,

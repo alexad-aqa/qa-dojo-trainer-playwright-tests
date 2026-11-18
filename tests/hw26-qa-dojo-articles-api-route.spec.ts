@@ -7,7 +7,6 @@ test.describe(
   'hw26: QA Dojo: API route mocking',
   { tag: '@hw26:api-route' },
   () => {
-    test.use({ storageState: { cookies: [], origins: [] } });
 
     test('Articles Data Updated via route.continue', async ({ authedPage }) => {
       const articlesHomePage = new ArticlesHomePage(authedPage);

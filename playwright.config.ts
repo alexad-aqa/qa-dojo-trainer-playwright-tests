@@ -42,14 +42,14 @@ export default defineConfig({
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    //storageState: 'playwright/.auth/user.json',
     baseURL: process.env.BASE_URL || 'http://104.168.59.50',
     /* Base URL to use in actions like `await page.goto('')`. */
     //baseURL: 'http://local-host',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
-    storageState: authFile,
+    // storageState is NOT set globally: tests start logged out.
+    // Tests that need login opt in with: test.use({ storageState: 'playwright/.auth/user.json' })
   },
 
   /* Configure projects for major browsers */

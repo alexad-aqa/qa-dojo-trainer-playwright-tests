@@ -14,7 +14,6 @@ import {
 } from './hw12-qa-dojo-articles-functions-page-actions';
 
 test.describe('Registration', { tag: '@hw12:functions' }, () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
   test.beforeEach(async ({ page }) => {
     await page.goto('/articles/register');
   });

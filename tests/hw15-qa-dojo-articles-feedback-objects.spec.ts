@@ -14,7 +14,6 @@ import {
 } from './hw15-qa-dojo-articles-feedback-objects-page-actions';
 
 test.describe('Feedback Submit', { tag: '@hw15:objects' }, () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
 
   for (const data of testData) {
     test(`contact form #${data.id}: ${data.description}`, async ({ page }) => {

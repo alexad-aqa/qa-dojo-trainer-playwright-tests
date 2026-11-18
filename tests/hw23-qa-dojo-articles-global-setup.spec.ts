@@ -8,9 +8,7 @@ import {
 } from './hw14-qa-dojo-articles-functions-arrays-editor-page-actions';
 
 test.describe('Articles Create', { tag: '@hw23:global-setup' }, () => {
-  // test.use({ storageState: { cookies: [], origins: [] } });
-
-  //test.use({ storageState: 'playwright/.auth/user.json' });
+  test.use({ storageState: 'playwright/.auth/user.json' });
 
   test('Multiple Articles Created and visible on Global/Feed Lists', async ({
     page,

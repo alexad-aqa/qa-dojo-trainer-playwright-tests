@@ -12,7 +12,6 @@ import {
 } from './hw14-qa-dojo-articles-functions-arrays-editor-page-actions';
 
 test.describe('Articles Create', { tag: '@hw14:functions/arrays' }, () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
 
   test('Multiple Articles Created and visible on Global/Feed Lists', async ({
     page,

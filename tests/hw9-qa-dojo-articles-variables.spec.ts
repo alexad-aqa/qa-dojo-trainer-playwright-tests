@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Registration', { tag: '@hw9:variables' }, () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
   test.beforeEach(async ({ page }) => {
     await page.goto('/articles/register');
   });

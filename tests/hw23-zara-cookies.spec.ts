@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Zara', { tag: '@hw23:cookies' }, () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
   // test.use({
   //   locale: 'en-GB',
   //   timezoneId: 'Europe/Kyiv',

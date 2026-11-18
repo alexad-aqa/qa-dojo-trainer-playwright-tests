@@ -5,12 +5,13 @@ import { UserController } from './controllers/UserController';
 import { createLocalStorage } from './fixtures/my-fixture';
 
 export default async function globalSetup(config: FullConfig) {
-  const { baseURL, storageState } = config.projects[0].use;
+  const { baseURL } = config.projects[0].use;
+  const storageState = path.resolve(__dirname, 'playwright/.auth/user.json');
   const email = process.env.TEST_USER;
   const password = process.env.TEST_PASSWORD;
 
-  if (!baseURL || typeof storageState !== 'string') {
-    throw new Error('Потрібні baseURL і шлях до storageState у конфігурації');
+  if (!baseURL) {
+    throw new Error('Потрібен baseURL у конфігурації');
   }
 
   if (!email || !password) {
