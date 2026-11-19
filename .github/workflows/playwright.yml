@@ -50,4 +50,31 @@ jobs:
           path: |
             playwright-report/
             playwright-report-json/
-          retention-days: 30
+          retention-days:
+            30
+
+            # NEW: prepare the HTML report for GitHub Pages (main branch only)
+      - name: Upload report for GitHub Pages
+        if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: playwright-report/
+
+  # NEW: publish the report to GitHub Pages
+  deploy-report:
+    needs: test
+    if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

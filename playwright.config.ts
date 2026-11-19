@@ -4,7 +4,7 @@ import path from 'path';
 
 const targetEnv = process.env.TEST_ENV || 'dev';
 dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
-const authFile = path.resolve(__dirname, 'playwright/.auth/user.json');
+//const authFile = path.resolve(__dirname, 'playwright/.auth/user.json');
 
 /**
  * Read environment variables from file.
@@ -26,6 +26,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+  //retryStrategy: 'isolated', // 'immediate'
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
@@ -47,7 +48,7 @@ export default defineConfig({
     //baseURL: 'http://local-host',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: process.env.CI ? 'on-first-retry' : 'off',
+    trace: process.env.CI ? 'retain-on-failure' : 'off',
     screenshot: 'only-on-failure',
     // storageState is NOT set globally: tests start logged out.
     // Tests that need login opt in with: test.use({ storageState: 'playwright/.auth/user.json' })
