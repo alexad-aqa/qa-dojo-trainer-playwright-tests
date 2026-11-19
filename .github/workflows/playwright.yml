@@ -60,6 +60,14 @@ jobs:
         with:
           path: playwright-report/
 
+      - name: Upload blob report
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: blob-report-${{ github.event.inputs.environment || 'dev' }}
+          path: blob-report/
+          retention-days: 7
+
   # NEW: publish the report to GitHub Pages
   deploy-report:
     needs: test
