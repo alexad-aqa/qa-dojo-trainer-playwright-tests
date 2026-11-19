@@ -1,4 +1,10 @@
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+const targetEnv = process.env.TEST_ENV || 'dev';
+dotenv.config({ path: path.resolve(__dirname, `.env.${targetEnv}`) });
+//const authFile = path.resolve(__dirname, 'playwright/.auth/user.json');
 
 /**
  * Read environment variables from file.
@@ -13,32 +19,49 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './tests',
-  globalSetup: './global-setup.ts',
+  globalSetup: './global-setup-api.ts',
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
+  //retryStrategy: 'isolated', // 'immediate'
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: !!process.env.CI
+    ? [
+        ['github'],
+        ['html', { outputFolder: 'playwright-report', open: 'never' }],
+        ['json', { outputFile: 'playwright-report-json/report.json' }],
+        //['blob', { outputDir: 'blob-report' }],
+      ]
+    : [
+        ['list'],
+        ['html', { outputFolder: 'playwright-report', open: 'on-failure' }],
+      ],
+
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    storageState: 'playwright/.auth/user.json',
+    baseURL: process.env.BASE_URL || 'http://104.168.59.50',
     /* Base URL to use in actions like `await page.goto('')`. */
     //baseURL: 'http://local-host',
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
-    trace: 'on-first-retry',
+    trace: process.env.CI ? 'retain-on-failure' : 'off',
+    screenshot: 'only-on-failure',
+    // storageState is NOT set globally: tests start logged out.
+    // Tests that need login opt in with: test.use({ storageState: 'playwright/.auth/user.json' })
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'], baseURL: 'http://104.168.59.50' },
+      name: 'QA-DOJO',
+      use: {
+        ...devices['Desktop Chrome'],
+      },
     },
 
     /* Test against mobile viewports. */

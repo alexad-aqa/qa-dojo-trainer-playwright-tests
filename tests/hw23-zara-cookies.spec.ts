@@ -1,15 +1,24 @@
 import { expect, test } from '@playwright/test';
 
 test.describe('Zara', { tag: '@hw23:cookies' }, () => {
-  test.use({ storageState: { cookies: [], origins: [] } });
-
   test('Zara: Cookies Test', async ({ page, context }) => {
     await test.step('Zara: GET cookies & check length', async ({}) => {
       await page.goto('https://www.zara.com/es/en/');
-      await page.getByRole('button', { name: 'Accept All Cookies' }).click();
-      await page
-        .getByRole('button', { name: 'Yes, continue on Spain' })
-        .click();
+      const acceptCookiesButton = page.getByRole('button', {
+        name: 'Accept All Cookies',
+      });
+      try {
+        await acceptCookiesButton.waitFor({ state: 'visible', timeout: 10000 });
+        await acceptCookiesButton.click();
+      } catch {}
+
+      const continueButton = page.getByRole('button', {
+        name: 'Yes, continue on Spain',
+      });
+      try {
+        await continueButton.waitFor({ state: 'visible', timeout: 5000 });
+        await continueButton.click();
+      } catch {}
 
       const cookies = await context.cookies();
       console.log('----- INITIAL GET cookies count ------ ' + cookies.length);

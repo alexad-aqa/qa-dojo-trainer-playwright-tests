@@ -1,20 +1,24 @@
 import { mkdir } from 'node:fs/promises';
 import { chromium, expect, type FullConfig } from '@playwright/test';
+import path from 'path';
 
 export default async function globalSetup(config: FullConfig) {
-  const { baseURL, storageState } = config.projects[0].use;
-  const email = 'olena@example.com';
-  const password = 'password';
+  const { baseURL } = config.projects[0].use;
+  const storageState = path.resolve(__dirname, 'playwright/.auth/user.json');
+  const email = process.env.TEST_USER!;
+  const password = process.env.TEST_PASSWORD!;
 
-  if (!baseURL || typeof storageState !== 'string') {
-    throw new Error('Потрібні baseURL і шлях до storageState у конфігурації');
+  if (!baseURL) {
+    throw new Error('Потрібен baseURL у конфігурації');
   }
 
   if (!email || !password) {
-    throw new Error('Задай TEST_USER_EMAIL і TEST_USER_PASSWORD');
+    throw new Error('Задай TEST_USER і TEST_PASSWORD');
   }
 
-  await mkdir('playwright/.auth', { recursive: true });
+  const authDir = path.resolve(__dirname, 'playwright/.auth');
+  await mkdir(authDir, { recursive: true });
+  //await mkdir('playwright/.auth', { recursive: true });
   const browser = await chromium.launch();
 
   try {

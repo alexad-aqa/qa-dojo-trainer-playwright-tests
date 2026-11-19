@@ -5,6 +5,9 @@ import {
   expectErrorEmailRequired,
   expectErrorMessageRequired,
 } from './hw15-qa-dojo-articles-feedback-objects-page-actions';
+import path from 'path';
+
+const filePath = path.resolve(__dirname, '../test-files/feedback.png');
 
 export const testData = [
   {
@@ -16,7 +19,7 @@ export const testData = [
       message: 'Found mistakes on Article Page',
       subject: 'bug',
       priority: 'high',
-      attachment: 'qa-dojo-trainer-hw/test-files/feedback.png',
+      attachment: filePath,
       sendCopyState: true,
     },
     verify: expectSuccessMsg,
@@ -44,7 +47,7 @@ export const testData = [
       message: '',
       subject: 'feature',
       priority: 'low',
-      attachment: 'qa-dojo-trainer-hw/test-files/feedback.png',
+      attachment: filePath,
       sendCopyState: true,
     },
     verify: async function (page) {
