@@ -35,7 +35,7 @@ export default defineConfig({
         ['github'],
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
         ['json', { outputFile: 'playwright-report-json/report.json' }],
-        ['blob', { outputDir: 'blob-report' }],
+        //['blob', { outputDir: 'blob-report' }],
       ]
     : [
         ['list'],

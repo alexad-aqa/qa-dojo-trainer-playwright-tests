@@ -43,30 +43,35 @@ jobs:
           TEST_USER: ${{ secrets.TEST_USER }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
 
-      - uses: actions/upload-artifact@v7
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v7
         if: ${{ !cancelled() }}
         with:
           name: playwright-report-${{ github.event.inputs.environment || 'dev' }}
-          path: |
-            playwright-report/
-            playwright-report-json/
-          retention-days:
-            30
+          path: playwright-report/
+          retention-days: 30
 
-            # NEW: prepare the HTML report for GitHub Pages (main branch only)
+      - name: Upload JSON report
+        uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: json-report-${{ github.event.inputs.environment || 'dev' }}
+          path: playwright-report-json/
+          retention-days: 30
+
       - name: Upload report for GitHub Pages
         if: ${{ !cancelled() && github.ref == 'refs/heads/main' }}
         uses: actions/upload-pages-artifact@v4
         with:
           path: playwright-report/
 
-      - name: Upload blob report
-        uses: actions/upload-artifact@v7
-        if: ${{ !cancelled() }}
-        with:
-          name: blob-report-${{ github.event.inputs.environment || 'dev' }}
-          path: blob-report/
-          retention-days: 7
+      # - name: Upload blob report
+      #   uses: actions/upload-artifact@v7
+      #   if: ${{ !cancelled() }}
+      #   with:
+      #     name: blob-report-${{ github.event.inputs.environment || 'dev' }}
+      #     path: blob-report/
+      #     retention-days: 7
 
   # NEW: publish the report to GitHub Pages
   deploy-report:
