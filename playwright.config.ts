@@ -30,16 +30,29 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: !!process.env.CI
+  reporter: process.env.CI
     ? [
         ['github'],
         ['html', { outputFolder: 'playwright-report', open: 'never' }],
         ['json', { outputFile: 'playwright-report-json/report.json' }],
-        //['blob', { outputDir: 'blob-report' }],
       ]
     : [
         ['list'],
         ['html', { outputFolder: 'playwright-report', open: 'on-failure' }],
+        ...(process.env.PW_REPORTS
+          ? ([
+              ['blob', { outputFile: 'test-results/blob.zip' }],
+              [
+                '@cyborgtests/reporter-playwright-reports-server',
+                {
+                  url: 'http://localhost:3001',
+                  token: process.env.REPORTS_SERVER_TOKEN,
+                  reportPath: 'test-results/blob.zip',
+                  resultDetails: { project: `qa-dojo-local-${targetEnv}` },
+                },
+              ],
+            ] as const)
+          : []),
       ],
 
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */

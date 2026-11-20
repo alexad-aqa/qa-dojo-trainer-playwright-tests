@@ -24,6 +24,7 @@
   },
   "homepage": "https://github.com/alexad-aqa/qa-dojo-articles-playwright-tests#readme",
   "devDependencies": {
+    "@cyborgtests/reporter-playwright-reports-server": "^2.6.1",
     "@playwright/test": "^1.63.0",
     "@types/node": "^26.6.6",
     "dotenv": "^18.0.10"
