@@ -4,21 +4,44 @@ test.describe('Zara', { tag: '@hw23:cookies' }, () => {
   test('Zara: Cookies Test', async ({ page, context }) => {
     await test.step('Zara: GET cookies & check length', async ({}) => {
       await page.goto('https://www.zara.com/es/en/');
+      await test.info().attach('zara-on-load', {
+        body: await page.screenshot({ fullPage: true }),
+        contentType: 'image/png',
+      });
+
       const acceptCookiesButton = page.getByRole('button', {
         name: 'Accept All Cookies',
       });
-      try {
-        await acceptCookiesButton.waitFor({ state: 'visible', timeout: 10000 });
+
+      const isBannerShown = await acceptCookiesButton
+        .waitFor({ state: 'visible', timeout: 10000 })
+        .then(() => true)
+        .catch(() => false);
+
+      if (isBannerShown) {
         await acceptCookiesButton.click();
-      } catch {}
+        console.log('Cookies Accepted');
+      } else {
+        console.log(
+          'Cookie banner NOT shown. URL:',
+          page.url(),
+          '| Title:',
+          await page.title(),
+        );
+      }
 
       const continueButton = page.getByRole('button', {
         name: 'Yes, continue on Spain',
       });
-      try {
-        await continueButton.waitFor({ state: 'visible', timeout: 5000 });
+      const isShown = await continueButton
+        .waitFor({ state: 'visible', timeout: 5000 })
+        .then(() => true)
+        .catch(() => false);
+
+      if (isShown) {
         await continueButton.click();
-      } catch {}
+      }
+      console.log('Country popup shown:', isShown);
 
       const cookies = await context.cookies();
       console.log('----- INITIAL GET cookies count ------ ' + cookies.length);
